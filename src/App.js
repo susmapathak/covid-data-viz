@@ -1,94 +1,58 @@
-import logo from './logo.svg';
 import './App.css';
+import CovidBarChart from './components/CovidBarChart';
 
 // this is from recharts library (https://recharts.org/en-US)
 // this library is used to display charts like Bar charts, Pie charts,etc.
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from "recharts";
 
-// this is the data for chart
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100
-  }
-];
 
 function App() {
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-sm">
-          {/* BarChart is a component to display actual chart */}
-          <BarChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="pv" fill="#8884d8" />
-            <Bar dataKey="uv" fill="#82ca9d" />
-          </BarChart>
+    <div className="wrapper">
+
+      <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a className="navbar-brand" href="#">Navbar</a>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <a className="nav-link" href="#">Link</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Link</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#">Link</a>
+            </li>
+          </ul>
         </div>
-        <div className="col-sm">
+      </nav>
+
+      <div className="container">
+        <br/>
+        <div className="row">
+          <div className="col-sm-4">
+            <ul className="nav nav-pills flex-column">
+              <li className="nav-item">
+                <a className="nav-link active" href="#">Cases By Age Group</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Cases By LGA</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Cases By </a>
+              </li>
+            </ul>
+            <hr className="d-sm-none"/>
+          </div>
+          <CovidBarChart/>
 
         </div>
       </div>
+
+
+
     </div>
   );
 }
