@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect, PureComponent } from 'react';
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 
 import {
   BarChart,
@@ -20,8 +20,10 @@ const groupBy = (array, key) => {
   }, {});
 };
 
+const COLORS = ['#5F9EA0', '#FFF8DC', '#008B8B', '#00FFFF', '#00CED1', '#87CEFA', '#B0C4DE', '#FFE4E1', '#48D1CC', '#98FB98', '#FFC0CB', '#B0E0E6', '#FA8072', '#D8BFD8', '#FFE4B5', '#87CEEB', '#AFEEEE', '#FFE4B5', '#BC8F8F', '#87CEEB',];
+
 // this is visual part
-function CovidBarChart() {
+function CovidCasesByLga() {
   const [recordNumber, setRecordNumber] = useState(100);
   const [chartData, setChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,20 +41,20 @@ function CovidBarChart() {
   //   }
   // ]
   // API to fetch data from
-  let url = "https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=24b34cb5-8b01-4008-9d93-d14cf5518aec&limit=" + recordNumber
+  let url = "https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit=" + recordNumber
   const fetchData = () => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setIsLoading(false);
         const results = data.result.records
-        const groupedData = groupBy(results, "age_group")
+        const groupedData = groupBy(results, "lga_name19")
         const formattedData = [];
         console.log(groupedData)
         for (const key in groupedData) {
           const groupData = {
             name: key,
-            case: groupedData[key].length
+            case: groupedData[key].length,
           }
           formattedData.push(groupData)
         }
@@ -66,9 +68,9 @@ function CovidBarChart() {
 
   return(
     <div className="col-sm-8">
-      <h2>NSW COVID-19 cases by age range in BarChart</h2>
+      <h2>NSW COVID-19 cases by LGA </h2>
       <label>
-        Select Number of Data:
+        Select Number of Records:
         <select value={recordNumber} onChange={e => setRecordNumber(e.target.value)}>
           <option value="500">500</option>
           <option value="1000">1000</option>
@@ -78,6 +80,27 @@ function CovidBarChart() {
           <option value="3000">3000</option>
         </select>
       </label>
+
+      {/* Pie Chart */}
+      <PieChart width={800} height={680}>
+        <Pie
+          dataKey="case"
+          isAnimationActive={false}
+          data={chartData}
+          cx="50%"
+          cy="50%"
+          outerRadius={250}
+          fill="#8884d8"
+          label
+        >
+          {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+        </Pie>
+        <Tooltip />
+      </PieChart>
+
+      {/* Bar Chart */}
       <BarChart
         width={800}
         height={400}
@@ -90,14 +113,13 @@ function CovidBarChart() {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        {/* <XAxis dataKey="name" interval={0} sclaeToFit="true" textAnchor="end" verticalAnchor="start" angle="-40" /> */}
-        <XAxis dataKey="name" textAnchor="end" sclaeToFit="true" verticalAnchor="start" interval={0} angle="-40" stroke="#8884d8" />
+        <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="case" fill="#8884d8" />
+        <Bar dataKey="case" fill="#48D1CC" />
       </BarChart>
     </div>
   );
 }
 
-export default CovidBarChart;
+export default CovidCasesByLga;

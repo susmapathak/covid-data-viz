@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect, PureComponent } from 'react';
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from "recharts";
+// import {
+//   BarChart,
+//   Bar,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   Legend
+// } from "recharts";
 
 const groupBy = (array, key) => {
   return array.reduce((result, currentValue) => {
@@ -20,8 +20,21 @@ const groupBy = (array, key) => {
   }, {});
 };
 
+// const RADIAN = Math.PI / 180;
+// const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+//   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+//   const x = cx + radius * Math.cos(-midAngle * RADIAN);
+//   const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+//   return (
+//     <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+//       {`${(percent * 100).toFixed(0)}%`}
+//     </text>
+//   );
+// };
+
 // this is visual part
-function CovidBarChart() {
+function CovidCasesByLga() {
   const [recordNumber, setRecordNumber] = useState(100);
   const [chartData, setChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,20 +52,20 @@ function CovidBarChart() {
   //   }
   // ]
   // API to fetch data from
-  let url = "https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=24b34cb5-8b01-4008-9d93-d14cf5518aec&limit=" + recordNumber
+  let url = "https://data.nsw.gov.au/data/api/3/action/datastore_search?resource_id=21304414-1ff1-4243-a5d2-f52778048b29&limit=" + recordNumber
   const fetchData = () => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setIsLoading(false);
         const results = data.result.records
-        const groupedData = groupBy(results, "age_group")
+        const groupedData = groupBy(results, "lga_name19")
         const formattedData = [];
         console.log(groupedData)
         for (const key in groupedData) {
           const groupData = {
             name: key,
-            case: groupedData[key].length
+            case: groupedData[key].length,
           }
           formattedData.push(groupData)
         }
@@ -78,26 +91,28 @@ function CovidBarChart() {
           <option value="3000">3000</option>
         </select>
       </label>
-      <BarChart
-        width={800}
-        height={400}
-        data={chartData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 120
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        {/* <XAxis dataKey="name" interval={0} sclaeToFit="true" textAnchor="end" verticalAnchor="start" angle="-40" /> */}
-        <XAxis dataKey="name" textAnchor="end" sclaeToFit="true" verticalAnchor="start" interval={0} angle="-40" stroke="#8884d8" />
-        <YAxis />
-        <Tooltip />
-        <Bar dataKey="case" fill="#8884d8" />
-      </BarChart>
+
+      {/* Pie Chart */}
+      <PieChart width={800} height={800}>
+        <Pie
+          data={chartData}
+          cx="50%"
+          cy="50%"
+          // labelLine={false}
+          label
+          outerRadius={300}
+          fill="#8884d8"
+          dataKey="case"
+          isAnimationActive={false}
+        >
+          {chartData.map((entry, index) => (
+            <Cell key={`cell-${index}`} />
+          ))}
+          <Tooltip isAnimationActive={false} />
+        </Pie>
+      </PieChart>
     </div>
   );
 }
 
-export default CovidBarChart;
+export default CovidCasesByLga;
