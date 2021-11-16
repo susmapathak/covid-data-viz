@@ -45,7 +45,7 @@ function App() {
         <div className="collapse navbar-collapse" id="collapsibleNavbar">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="second.html">Pathogeny</a>
+              <a className="nav-link" href="#">Pathogeny</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">Symptoms</a>

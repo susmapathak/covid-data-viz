@@ -64,7 +64,7 @@ function CovidBarChart() {
     fetchData();
   }, [recordNumber]);
 
-  return(
+  return (
     <div className="col-sm-8">
       <h2>NSW COVID-19 cases by age range in BarChart</h2>
       <label>
