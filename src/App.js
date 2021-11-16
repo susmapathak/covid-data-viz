@@ -23,9 +23,21 @@ function App() {
   });
 
   return (
-    <div className="wrapper">
 
-      <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div className="wrapper">
+      <header className="header">
+        <div className="logo w">
+          <a href="index.js" title="fightcovid">fightcovid</a>
+        </div>
+        <div className="info w">
+          <ul>
+            <li><a href="#" className="acc">Manage Account</a></li>
+            <li><a href="#" className="search">Search</a></li>
+            <li><a href="#" className="donate">Donate Now</a></li>
+          </ul>
+        </div>
+      </header>
+      <nav className="navbar navbar-expand-sm bg-danger navbar-dark">
         <a className="navbar-brand" href="CovidBarChart.js">Covid-19 Data</a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
           <span className="navbar-toggler-icon"></span>
@@ -33,7 +45,7 @@ function App() {
         <div className="collapse navbar-collapse" id="collapsibleNavbar">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="#">Pathogeny</a>
+              <a className="nav-link" href="second.html">Pathogeny</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">Symptoms</a>
@@ -46,7 +58,7 @@ function App() {
       </nav>
 
       <div className="container">
-        <br/>
+        <br />
         <div className="row">
           <div className="col-sm-4">
             <ul className="nav nav-pills flex-column">
@@ -60,7 +72,7 @@ function App() {
                 <a className={`nav-link ${chartType === 'case_by_lga' ? 'active' : ''}`} href="#" onClick={e => setChartType('case_by_lga')}>Cases By LGA</a>
               </li>
             </ul>
-            <hr className="d-sm-none"/>
+            <hr className="d-sm-none" />
           </div>
           {chartType === 'case_by_age_group' && <CovidBarChart />}
           {chartType === 'case_by_source' && <CovidChartBySource />}
